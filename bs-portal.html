@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS & C++ Master Portal - Taha Mujtaba</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class', theme: { extend: { colors: { tealAccent: '#0d9488', cyanGlow: '#06b6d4', darkBg: '#0f172a', cardBg: '#1e293b' } } } }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; user-select: none; }
+        code, textarea.code-font { font-family: 'Fira Code', monospace; }
+        textarea, input, [contenteditable="true"] { user-select: text; -webkit-user-select: text; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #0d9488; }
+        .glass-panel { background: rgba(30, 41, 59, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        @keyframes alertPulse { 0%, 100% { background-color: rgba(220, 38, 38, 0.2); } 50% { background-color: rgba(220, 38, 38, 0.5); } }
+        .cheat-alert-bg { animation: alertPulse 1.5s infinite; }
+        .fc-node { cursor: move; transition: box-shadow 0.2s, border-color 0.2s; touch-action: none; }
+        .fc-node:hover { box-shadow: 0 0 15px rgba(13, 148, 136, 0.5); }
+        .nav-locked { opacity: 0.4 !important; cursor: not-allowed !important; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between bg-slate-900 text-slate-100">
+
+    <header class="sticky top-0 z-40 glass-panel border-b border-slate-700/60 px-4 lg:px-8 py-3.5 shadow-lg">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-500 to-cyan-400 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-teal-500/20"><i class="fa-solid fa-code"></i></div>
+                <div>
+                    <h1 class="font-extrabold text-lg md:text-xl tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-cyan-300 to-sky-400">CS & C++ Prep Portal</h1>
+                    <p class="text-xs text-slate-400 font-medium hidden sm:block">Interactive Test, Comprehensive Definitions & Creator Studio</p>
+                </div>
+            </div>
+            <nav class="hidden md:flex items-center space-x-1 bg-slate-800/80 p-1.5 rounded-xl border border-slate-700/50">
+                <button onclick="switchTab('tab-quiz')" id="nav-tab-quiz" class="nav-btn active px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 text-teal-400 bg-slate-700/80 shadow-sm"><i class="fa-solid fa-file-pen mr-1.5"></i> Test Center</button>
+                <button onclick="switchTab('tab-notes')" id="nav-tab-notes" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-700/50 transition-all duration-200"><i class="fa-solid fa-book-bookmark mr-1.5"></i> Definitions</button>
+                <button onclick="switchTab('tab-editor')" id="nav-tab-editor" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-700/50 transition-all duration-200"><i class="fa-solid fa-laptop-code mr-1.5"></i> Code Lab & AI</button>
+                <button onclick="switchTab('tab-flowchart')" id="nav-tab-flowchart" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-700/50 transition-all duration-200"><i class="fa-solid fa-diagram-project mr-1.5"></i> Flowchart Builder</button>
+            </nav>
+            <div class="flex items-center space-x-2">
+                <button onclick="promptCreatorPasskey()" id="creator-btn" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-teal-500/20 to-cyan-500/20 hover:from-teal-500/30 hover:to-cyan-500/30 text-teal-300 border border-teal-500/40 text-xs sm:text-sm font-bold flex items-center shadow-md transition"><i class="fa-solid fa-lock mr-2 text-teal-400"></i><span>Creator / Add Material</span></button>
+                <button onclick="toggleMobileNav()" class="md:hidden p-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white"><i class="fa-solid fa-bars text-lg"></i></button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden mt-3 pt-3 border-t border-slate-700 grid grid-cols-2 gap-2">
+            <button onclick="switchTab('tab-quiz')" id="mobile-nav-quiz" class="px-3 py-2 rounded-lg text-xs font-semibold bg-slate-800 text-teal-400 text-left"><i class="fa-solid fa-file-pen mr-2"></i>Test Center</button>
+            <button onclick="switchTab('tab-notes')" id="mobile-nav-notes" class="px-3 py-2 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 text-left"><i class="fa-solid fa-book-bookmark mr-2"></i>Definitions</button>
+            <button onclick="switchTab('tab-editor')" id="mobile-nav-editor" class="px-3 py-2 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 text-left"><i class="fa-solid fa-laptop-code mr-2"></i>Code Lab</button>
+            <button onclick="switchTab('tab-flowchart')" id="mobile-nav-flowchart" class="px-3 py-2 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 text-left"><i class="fa-solid fa-diagram-project mr-2"></i>Flowchart Builder</button>
+        </div>
+    </header>
+
+    <main class="max-w-7xl w-full mx-auto px-4 lg:px-8 py-6 flex-grow">
+        <!-- TAB 1: QUIZ -->
+        <section id="tab-quiz" class="tab-content space-y-6">
+            <div id="quiz-pre-start" class="glass-panel p-6 sm:p-8 rounded-2xl shadow-xl relative overflow-hidden border border-slate-700">
+                <div class="absolute -right-10 -bottom-10 w-60 h-60 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="max-w-3xl">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/30 text-teal-400 text-xs font-bold uppercase tracking-wider mb-4"><i class="fa-solid fa-shield-halved"></i> Anti-Cheat Enabled</div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-3">Mastery Exam & Practice Testing Center</h2>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">Select a duration. Every duration has <strong class="text-teal-300">3 different test sets</strong> — pressing Start rotates to the next set. Written answers are AI-marked.</p>
+                    <div class="bg-amber-950/40 border border-amber-500/30 rounded-xl p-4 mb-6 text-xs sm:text-sm text-amber-200/90 space-y-2">
+                        <p class="font-bold text-amber-400 flex items-center"><i class="fa-solid fa-triangle-exclamation mr-2 text-base"></i> Exam Anti-Cheating Protocol Active:</p>
+                        <ul class="list-disc list-inside space-y-1 text-slate-300">
+                            <li>Switching tabs, minimizing, or losing focus = warning.</li>
+                            <li><strong>2 Focus Warnings = Automatic 0 Score.</strong></li>
+                            <li>Copy-paste and right-click are monitored.</li>
+                            <li><strong>All other sections are locked while an exam is active.</strong></li>
+                        </ul>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700">
+                            <label class="text-xs text-slate-400 font-semibold block mb-1">Duration &amp; Pattern</label>
+                            <select id="quiz-timer-select" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-teal-500">
+                                <option value="5">5 Minutes — MCQs Only</option>
+                                <option value="10" selected>10 Minutes — MCQs + 2 Short</option>
+                                <option value="15">15 Minutes — MCQs + 5 Short</option>
+                                <option value="20">20 Minutes — MCQs + 5 Short + 1 Long</option>
+                            </select>
+                        </div>
+                        <div class="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700">
+                            <label class="text-xs text-slate-400 font-semibold block mb-1">Topic Filter</label>
+                            <select id="quiz-category-select" onchange="updateTotalQuestionsBadge()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-teal-500"></select>
+                        </div>
+                        <div class="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700 flex flex-col justify-center">
+                            <span class="text-xs text-slate-400 font-semibold">Total Available MCQs</span>
+                            <span id="total-questions-badge" class="text-lg font-bold text-teal-400">0 Questions</span>
+                        </div>
+                    </div>
+                    <button onclick="startExam()" class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-slate-950 font-extrabold text-base shadow-lg shadow-teal-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0"><i class="fa-solid fa-play mr-2"></i> Start Exam Now</button>
+                </div>
+            </div>
+            <div id="quiz-active-box" class="hidden space-y-6">
+                <div class="glass-panel p-4 rounded-xl flex flex-wrap items-center justify-between gap-4 border border-slate-700 shadow-md sticky top-16 z-30">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Progress:</span>
+                        <div class="w-32 sm:w-48 bg-slate-800 h-2.5 rounded-full overflow-hidden border border-slate-700"><div id="exam-progress-bar" class="bg-gradient-to-r from-teal-500 to-cyan-400 h-full w-0 transition-all duration-300"></div></div>
+                        <span id="exam-progress-text" class="text-xs font-bold text-teal-400">Q 1/10</span>
+                    </div>
+                    <div class="flex items-center space-x-2 bg-slate-900/90 border border-teal-500/40 px-4 py-2 rounded-xl text-teal-300 font-mono text-base font-bold shadow-inner"><i class="fa-regular fa-clock animate-pulse text-teal-400"></i><span id="exam-timer-display">10:00</span></div>
+                    <div class="flex items-center space-x-2 text-xs text-indigo-300 bg-indigo-500/10 px-3 py-1.5 rounded-lg border border-indigo-500/20"><i class="fa-solid fa-layer-group"></i><span>Set <strong id="exam-set-label" class="text-white">1</strong>/3</span></div>
+                    <div class="flex items-center space-x-2 text-xs text-amber-400 bg-amber-500/10 px-3 py-1.5 rounded-lg border border-amber-500/20"><i class="fa-solid fa-triangle-exclamation"></i><span>Violations: <strong id="cheat-warning-count" class="text-white">0</strong>/2</span></div>
+                </div>
+                <div id="quiz-questions-list" class="space-y-6"></div>
+                <div class="flex justify-end space-x-4 pt-4 border-t border-slate-800">
+                    <button onclick="submitExam(false)" class="px-8 py-3.5 rounded-xl bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-500 hover:to-cyan-500 text-white font-extrabold text-sm shadow-xl shadow-teal-500/20 transition"><i class="fa-solid fa-check-double mr-2"></i> Finish &amp; Submit (AI Marks Written)</button>
+                </div>
+            </div>
+            <div id="quiz-results-card" class="hidden glass-panel p-6 sm:p-8 rounded-2xl border border-slate-700 shadow-2xl space-y-6">
+                <div class="text-center space-y-2 border-b border-slate-700/80 pb-6">
+                    <div id="result-badge-icon" class="w-16 h-16 rounded-2xl mx-auto flex items-center justify-center text-3xl mb-2 shadow-lg"></div>
+                    <h3 id="result-status-title" class="text-2xl sm:text-3xl font-extrabold text-white">Exam Completed</h3>
+                    <p id="result-status-subtitle" class="text-slate-400 text-sm">Detailed performance breakdown</p>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700 text-center"><span class="text-xs text-slate-400 font-semibold block mb-1">Score %</span><span id="res-score-percent" class="text-2xl sm:text-3xl font-extrabold text-teal-400">0%</span></div>
+                    <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700 text-center"><span class="text-xs text-slate-400 font-semibold block mb-1">Marks</span><span id="res-correct-count" class="text-2xl sm:text-3xl font-extrabold text-emerald-400">0</span></div>
+                    <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700 text-center"><span class="text-xs text-slate-400 font-semibold block mb-1">Time</span><span id="res-time-spent" class="text-2xl sm:text-3xl font-extrabold text-cyan-400">00:00</span></div>
+                    <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700 text-center"><span class="text-xs text-slate-400 font-semibold block mb-1">Cheat</span><span id="res-cheat-status" class="text-xs sm:text-sm font-extrabold text-emerald-400 mt-2 block">Clean</span></div>
+                </div>
+                <div class="space-y-4">
+                    <h4 class="font-bold text-lg text-white flex items-center"><i class="fa-solid fa-list-check mr-2 text-teal-400"></i> Review Breakdown</h4>
+                    <div id="quiz-review-container" class="space-y-4 max-h-96 overflow-y-auto pr-2"></div>
+                </div>
+                <div class="flex justify-center pt-4"><button onclick="resetExamState()" class="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-sm border border-slate-600 transition"><i class="fa-solid fa-rotate-left mr-2"></i> Back to Test Center</button></div>
+            </div>
+        </section>
+
+        <!-- TAB 2: NOTES -->
+        <section id="tab-notes" class="tab-content hidden space-y-6">
+            <div class="glass-panel p-6 rounded-2xl border border-slate-700 shadow-xl flex flex-col md:flex-row gap-4 items-center justify-between">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-extrabold text-white flex items-center"><i class="fa-solid fa-book-bookmark text-teal-400 mr-2.5"></i> Definitions & Knowledge Base</h2>
+                    <p class="text-xs sm:text-sm text-slate-400 mt-1">Search through structured core concepts, flowchart shapes, architecture, and language rules.</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                    <div class="relative flex-1 md:w-64">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-sm"></i>
+                        <input type="text" id="def-search-input" onkeyup="filterDefinitions()" placeholder="Search terms..." class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-4 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-teal-500">
+                    </div>
+                    <select id="def-category-filter" onchange="filterDefinitions()" class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-teal-500"></select>
+                </div>
+            </div>
+            <div id="definitions-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+        </section>
+
+        <!-- TAB 3: CODE LAB -->
+        <section id="tab-editor" class="tab-content hidden space-y-6">
+            <div class="glass-panel p-6 rounded-2xl border border-slate-700 shadow-xl space-y-4">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-extrabold text-white flex items-center"><i class="fa-solid fa-laptop-code text-teal-400 mr-2.5"></i> Code Lab & AI Checker</h2>
+                        <p class="text-xs sm:text-sm text-slate-400 mt-1">Write code from scratch. AI is strict about syntax, headers, and namespace.</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between bg-slate-800/90 px-4 py-2 rounded-t-xl border border-slate-700">
+                            <span class="text-xs font-bold text-slate-300 font-mono"><i class="fa-regular fa-file-code mr-1 text-teal-400"></i> main.cpp</span>
+                            <div class="flex items-center space-x-2">
+                                <button type="button" onclick="clearCode()" class="text-xs text-rose-400 hover:text-rose-300 px-2 py-1 rounded bg-slate-700/50"><i class="fa-solid fa-trash-can mr-1"></i> Clear</button>
+                            </div>
+                        </div>
+                        <textarea id="cpp-code-editor" class="code-font w-full h-80 bg-slate-950 text-emerald-400 p-4 rounded-b-xl border border-slate-800 focus:outline-none focus:border-teal-500/80 text-sm leading-relaxed" spellcheck="false" placeholder="// Write your C++ code here from scratch..."></textarea>
+                        <div class="flex flex-wrap gap-3">
+                            <button type="button" onclick="runCodeSimulator()" class="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-400 text-slate-950 font-bold text-sm shadow-lg shadow-teal-500/20 transition flex items-center justify-center"><i class="fa-solid fa-play mr-2"></i> Run Code</button>
+                            <button type="button" onclick="evaluateCodeAI()" class="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 text-white font-bold text-sm shadow-lg shadow-sky-500/20 transition flex items-center justify-center"><i class="fa-solid fa-robot mr-2"></i> AI Code Evaluator</button>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center"><i class="fa-solid fa-terminal mr-2 text-cyan-400"></i> Terminal Output</label>
+                            <div id="code-console-output" class="code-font w-full h-44 bg-slate-950 text-slate-200 p-4 rounded-xl border border-slate-800 overflow-y-auto text-xs leading-relaxed"><span class="text-slate-500">// Output will appear here...</span></div>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center"><i class="fa-solid fa-wand-magic-sparkles mr-2 text-indigo-400"></i> AI Inspection Report</label>
+                            <div id="ai-evaluation-box" class="w-full h-40 bg-slate-900/90 text-slate-300 p-4 rounded-xl border border-slate-700/80 overflow-y-auto text-xs leading-relaxed space-y-2"><p class="text-slate-500 italic">Click "AI Code Evaluator" for grading.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: FLOWCHART -->
+        <section id="tab-flowchart" class="tab-content hidden space-y-6">
+            <div class="glass-panel p-6 rounded-2xl border border-slate-700 shadow-xl space-y-4">
+                <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-700 pb-4">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-extrabold text-white flex items-center"><i class="fa-solid fa-diagram-project text-teal-400 mr-2.5"></i> Interactive Flowchart Designer</h2>
+                        <p class="text-xs sm:text-sm text-slate-400 mt-1">Add blank shapes, type inside them, and link them with arrows.</p>
+                    </div>
+                </div>
+                <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700 grid grid-cols-1 md:grid-cols-3 gap-3 items-center">
+                    <div class="md:col-span-2">
+                        <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Select Task</label>
+                        <select id="flow-question-select" onchange="loadFlowQuestion()" class="w-full mt-1.5 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-teal-300 font-semibold focus:outline-none focus:border-teal-500"></select>
+                        <p id="flow-question-desc" class="text-xs text-slate-400 mt-1.5"></p>
+                    </div>
+                    <div class="flex md:justify-end"><button type="button" onclick="checkFlowchartAI()" class="w-full md:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-sky-600 hover:from-indigo-500 hover:to-sky-500 text-white font-extrabold text-xs shadow-lg shadow-indigo-500/20 transition"><i class="fa-solid fa-robot mr-2"></i> AI Check &amp; Mark</button></div>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400 mr-1">Add Shapes:</span>
+                    <button type="button" onclick="addFlowNode('oval')" class="px-3 py-1.5 rounded-lg bg-teal-500/20 text-teal-300 border border-teal-500/40 text-xs font-bold hover:bg-teal-500/30">Oval</button>
+                    <button type="button" onclick="addFlowNode('rectangle')" class="px-3 py-1.5 rounded-lg bg-sky-500/20 text-sky-300 border border-sky-500/40 text-xs font-bold hover:bg-sky-500/30">Rectangle</button>
+                    <button type="button" onclick="addFlowNode('diamond')" class="px-3 py-1.5 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-bold hover:bg-amber-500/30">Diamond</button>
+                    <button type="button" onclick="addFlowNode('parallelogram')" class="px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-bold hover:bg-emerald-500/30">Parallelogram</button>
+                    <button type="button" onclick="toggleArrowMode()" id="arrow-tool-btn" class="px-3 py-1.5 rounded-lg bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 text-xs font-bold hover:bg-indigo-500/30"><i class="fa-solid fa-arrow-right mr-1"></i> Arrow Tool</button>
+                    <button type="button" onclick="clearFlowchartCanvas()" class="px-3 py-1.5 rounded-lg bg-rose-500/20 text-rose-300 border border-rose-500/40 text-xs font-bold hover:bg-rose-500/30"><i class="fa-solid fa-rotate-right mr-1"></i> Clear</button>
+                </div>
+                <div id="flow-score-box" class="hidden p-4 rounded-xl border"></div>
+                
+                <!-- Canvas -->
+                <div id="flowchart-canvas" class="relative w-full h-[500px] bg-slate-950 rounded-2xl border-2 border-dashed border-slate-700/80 overflow-hidden shadow-inner flex items-center justify-center">
+                    <div id="flow-empty-hint" class="text-center p-6 text-slate-500 pointer-events-none">
+                        <i class="fa-solid fa-hand-pointer text-4xl mb-3 text-slate-600 animate-bounce"></i>
+                        <p class="text-sm font-semibold">Click shapes above to add blank shapes.</p>
+                    </div>
+                    <svg id="flow-svg-layer" class="absolute inset-0 w-full h-full pointer-events-none z-0">
+                        <defs><marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#14b8a6"></polygon></marker></defs>
+                    </svg>
+                    <div id="flow-nodes-container" class="absolute inset-0 w-full h-full z-10"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- PASSKEY MODAL -->
+    <div id="modal-passkey" class="fixed inset-0 z-50 hidden bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="glass-panel max-w-md w-full p-6 rounded-2xl border border-teal-500/40 shadow-2xl text-center space-y-4">
+            <div class="w-14 h-14 rounded-2xl bg-teal-500/20 border border-teal-500/40 flex items-center justify-center mx-auto text-teal-400 text-2xl"><i class="fa-solid fa-key"></i></div>
+            <div><h3 class="text-xl font-extrabold text-white">Creator Verification</h3><p class="text-xs text-slate-400 mt-1">Enter the secret passkey to unlock content management.</p></div>
+            <div class="space-y-2"><input type="password" id="creator-passkey-input" placeholder="Enter passkey..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-center text-sm text-teal-300 font-mono focus:outline-none focus:border-teal-500 tracking-widest" onkeydown="handlePasskeyKeyDown(event)"></div>
+            <div id="passkey-error-msg" class="hidden text-xs text-rose-400 bg-rose-500/10 p-2.5 rounded-lg border border-rose-500/20"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Incorrect Passkey! Access Denied.</div>
+            <div class="flex space-x-2 pt-2">
+                <button type="button" onclick="closeModal('modal-passkey')" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold">Cancel</button>
+                <button type="button" onclick="verifyCreatorPasskey()" class="flex-1 py-2.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-extrabold text-xs shadow-lg transition">Unlock</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CREATOR MODAL -->
+    <div id="modal-update" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="glass-panel max-w-2xl w-full p-6 rounded-2xl border border-slate-700 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-slate-700 pb-3">
+                <h3 class="text-lg font-bold text-white flex items-center"><i class="fa-solid fa-pen-to-square text-teal-400 mr-2"></i> Creator Studio</h3>
+                <button type="button" onclick="closeModal('modal-update')" class="text-slate-400 hover:text-white p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div id="creator-status" class="hidden mb-3 p-2.5 rounded-lg text-xs font-semibold"></div>
+
+            <div class="flex border-b border-slate-700 space-x-3 overflow-x-auto pb-1">
+                <button type="button" onclick="switchModalTab('mod-topic')" id="btn-mod-topic" class="pb-2 text-xs font-bold text-teal-400 border-b-2 border-teal-400 whitespace-nowrap">+ Add Topic</button>
+                <button type="button" onclick="switchModalTab('mod-mcq')" id="btn-mod-mcq" class="pb-2 text-xs font-bold text-slate-400 whitespace-nowrap">+ Add MCQ</button>
+                <button type="button" onclick="switchModalTab('mod-def')" id="btn-mod-def" class="pb-2 text-xs font-bold text-slate-400 whitespace-nowrap">+ Add Definition</button>
+                <button type="button" onclick="switchModalTab('mod-flow')" id="btn-mod-flow" class="pb-2 text-xs font-bold text-slate-400 whitespace-nowrap">+ Add Flowchart Q</button>
+            </div>
+
+            <!-- TOPIC FORM (Replaced form with div and button type=button) -->
+            <div id="form-add-topic" class="space-y-4">
+                <div>
+                    <label class="text-xs text-slate-300 font-semibold block mb-1">New Topic Name</label>
+                    <input type="text" id="new-topic-name" placeholder="e.g. Data Science, Python..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-teal-500">
+                </div>
+                <button type="button" onclick="handleAddTopic()" class="w-full py-2.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-extrabold text-xs shadow-lg transition">Create New Topic</button>
+            </div>
+
+            <!-- MCQ FORM -->
+            <div id="form-add-mcq" class="space-y-3 hidden">
+                <div>
+                    <label class="text-xs text-slate-300 font-semibold block mb-1">Select Topic</label>
+                    <select id="new-q-category" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-teal-300 font-bold"></select>
+                </div>
+                <div>
+                    <label class="text-xs text-slate-300 font-semibold block mb-1">Question Text</label>
+                    <input type="text" id="new-q-text" placeholder="Enter question..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-teal-500">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div><label class="text-xs text-slate-400 font-semibold block mb-1">Option A</label><input type="text" id="new-q-optA" placeholder="Option A" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200"></div>
+                    <div><label class="text-xs text-slate-400 font-semibold block mb-1">Option B</label><input type="text" id="new-q-optB" placeholder="Option B" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200"></div>
+                    <div><label class="text-xs text-slate-400 font-semibold block mb-1">Option C</label><input type="text" id="new-q-optC" placeholder="Option C" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200"></div>
+                    <div><label class="text-xs text-slate-400 font-semibold block mb-1">Option D</label><input type="text" id="new-q-optD" placeholder="Option D" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200"></div>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="text-xs text-slate-300 font-semibold block mb-1">Correct Answer</label>
+                        <select id="new-q-correct" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-teal-300 font-bold">
+                            <option value="0">Option A</option><option value="1">Option B</option><option value="2">Option C</option><option value="3">Option D</option>
+                        </select>
+                    </div>
+                    <div><label class="text-xs text-slate-300 font-semibold block mb-1">Explanation</label><input type="text" id="new-q-explain" placeholder="Why?" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200"></div>
+                </div>
+                <button type="button" onclick="handleAddMCQ()" class="w-full py-2.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-extrabold text-xs shadow-lg transition">Save Question</button>
+            </div>
+
+            <!-- DEFINITION FORM -->
+            <div id="form-add-def" class="space-y-3 hidden">
+                <div><label class="text-xs text-slate-300 font-semibold block mb-1">Term</label><input type="text" id="new-def-term" placeholder="e.g. Polymorphism" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-teal-500"></div>
+                <div><label class="text-xs text-slate-300 font-semibold block mb-1">Category</label><select id="new-def-category" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200"></select></div>
+                <div><label class="text-xs text-slate-300 font-semibold block mb-1">Definition</label><textarea id="new-def-text" rows="3" placeholder="Clear explanation..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-xs text-slate-200 focus:border-teal-500"></textarea></div>
+                <button type="button" onclick="handleAddDef()" class="w-full py-2.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-extrabold text-xs shadow-lg transition">Save Definition</button>
+            </div>
+
+            <!-- FLOWCHART FORM -->
+            <div id="form-add-flow" class="space-y-3 hidden">
+                <div><label class="text-xs text-slate-300 font-semibold block mb-1">Task Title</label><input type="text" id="new-flow-title" placeholder="e.g. Average of Three Numbers" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-teal-500"></div>
+                <div><label class="text-xs text-slate-300 font-semibold block mb-1">Description</label><textarea id="new-flow-desc" rows="2" placeholder="What should the flowchart do?" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-200 focus:border-teal-500"></textarea></div>
+                <div>
+                    <label class="text-xs text-slate-300 font-semibold block mb-2">Required Shapes</label>
+                    <div class="grid grid-cols-2 gap-2 text-xs text-slate-300">
+                        <label class="flex items-center space-x-2 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2"><input type="checkbox" value="oval" class="flow-shape-chk accent-teal-500" checked> <span>Oval</span></label>
+                        <label class="flex items-center space-x-2 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2"><input type="checkbox" value="rectangle" class="flow-shape-chk accent-teal-500" checked> <span>Rectangle</span></label>
+                        <label class="flex items-center space-x-2 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2"><input type="checkbox" value="diamond" class="flow-shape-chk accent-teal-500"> <span>Diamond</span></label>
+                        <label class="flex items-center space-x-2 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2"><input type="checkbox" value="parallelogram" class="flow-shape-chk accent-teal-500" checked> <span>Parallelogram</span></label>
+                    </div>
+                </div>
+                <div><label class="text-xs text-slate-300 font-semibold block mb-1">Expected Keywords (comma separated)</label><input type="text" id="new-flow-keywords" placeholder="start, input, average, output, end" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-teal-500"></div>
+                <button type="button" onclick="handleAddFlowQuestion()" class="w-full py-2.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-extrabold text-xs shadow-lg transition">Save Flowchart Question</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHEAT WARNING -->
+    <div id="modal-cheat-alert" class="fixed inset-0 z-50 hidden cheat-alert-bg backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-slate-900 max-w-md w-full p-6 rounded-2xl border-2 border-rose-500 shadow-2xl text-center space-y-4">
+            <div class="w-16 h-16 rounded-full bg-rose-500/20 border border-rose-500 flex items-center justify-center mx-auto text-rose-500 text-3xl"><i class="fa-solid fa-triangle-exclamation animate-bounce"></i></div>
+            <h3 class="text-2xl font-black text-white">Security Violation Detected!</h3>
+            <p id="cheat-alert-msg" class="text-sm text-rose-200">You switched tabs or lost focus!</p>
+            <div class="p-3 bg-slate-950 rounded-xl border border-rose-900 text-xs text-slate-400 text-left"><strong>Warning:</strong><p>Count: <span id="modal-cheat-count" class="text-rose-400 font-bold">1/2</span></p><p id="modal-cheat-subtext" class="mt-1">One more = disqualification.</p></div>
+            <button type="button" onclick="acknowledgeCheatWarning()" class="w-full py-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-extrabold text-sm shadow-lg transition">I Understand - Return</button>
+        </div>
+    </div>
+
+    <footer class="glass-panel border-t border-slate-800 py-6 px-4 lg:px-8 mt-10">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+            <div>
+                <p class="text-sm font-semibold text-slate-300">All rights reserved by <span class="text-teal-400 font-bold">TAHA MUJTABA</span> &copy; <span id="footer-year"></span></p>
+            </div>
+            <div class="flex items-center space-x-4 text-slate-400 text-lg">
+                <a href="#" class="hover:text-teal-400 transition"><i class="fa-brands fa-github"></i></a>
+                <a href="#" class="hover:text-teal-400 transition"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="#" class="hover:text-teal-400 transition"><i class="fa-solid fa-globe"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function safeGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+        function safeSet(k, v) { try { localStorage.setItem(k, v); } catch (e) { console.warn('localStorage blocked:', e); } }
+        function loadArray(k, fb) { try { const raw = safeGet(k); if (!raw) return fb; const p = JSON.parse(raw); return (Array.isArray(p) && p.length > 0) ? p : fb; } catch (e) { return fb; } }
+        function loadObject(k, fb) { try { const raw = safeGet(k); if (!raw) return fb; const p = JSON.parse(raw); return (p && typeof p === 'object' && !Array.isArray(p) && Object.keys(p).length > 0) ? p : fb; } catch (e) { return fb; } }
+
+        const defaultTopics = ["Problem Solving", "Algorithms & Flowcharts", "Computer Architecture", "Structured Programming", "C++ Basics & Compilation", "Data Types & Memory", "Operators & Expressions", "Decision Making"];
+        
+        const defaultQuestions = [
+            { id: 1, category: "Problem Solving", question: "What is the primary definition of Problem Solving in CS?", options: ["Writing C++ code without planning", "A step-by-step logical process to analyze a task and develop an efficient solution", "Memorizing syntax", "Executing pre-compiled binaries"], correct: 1, explanation: "Systematic step-by-step approach to analyze problems and build logical solutions." },
+            { id: 2, category: "Problem Solving", question: "Which step identifies inputs, processing, and outputs?", options: ["Problem Definition", "Problem Analysis", "Testing & Debugging", "Coding"], correct: 1, explanation: "Problem Analysis determines precise inputs, processes, outputs." },
+            { id: 3, category: "Problem Solving", question: "When is an algorithm converted into executable statements?", options: ["Designing", "Testing", "Coding", "Definition"], correct: 2, explanation: "Coding translates conceptual algorithm into syntax." },
+            { id: 4, category: "Problem Solving", question: "Goal of Testing & Debugging?", options: ["Convert to machine code", "Run with sample data to detect/eliminate errors", "Assign memory", "Link libraries"], correct: 1, explanation: "Testing verifies behavior and removes bugs." },
+            { id: 5, category: "Algorithms & Flowcharts", question: "Essential characteristic of a valid algorithm?", options: ["Depends on C++", "Finite, ending after specific steps", "Runs infinitely", "Ambiguous instructions"], correct: 1, explanation: "Algorithms must be finite and terminate." },
+            { id: 6, category: "Algorithms & Flowcharts", question: "Purpose of INPUT/PRINT in pseudo-code?", options: ["Compile C++", "Represent reading input and showing output in plain English", "Allocate RAM", "Process headers"], correct: 1, explanation: "Pseudo-code uses plain language for logical actions." },
+            { id: 7, category: "Algorithms & Flowcharts", question: "Which flowchart symbol for Input/Output?", options: ["Rectangle", "Oval", "Parallelogram", "Diamond"], correct: 2, explanation: "Parallelogram = input/output." },
+            { id: 8, category: "Algorithms & Flowcharts", question: "Which symbol represents calculations/assignments?", options: ["Diamond", "Rectangle", "Terminal", "Pentagon"], correct: 1, explanation: "Rectangles = process/arithmetic." },
+            { id: 9, category: "Algorithms & Flowcharts", question: "Symbol for connecting flowchart elements on different pages?", options: ["Diamond", "Parallelogram", "Circle/Pentagon Connector", "Oval"], correct: 2, explanation: "Connectors link across flow paths." },
+            { id: 10, category: "Computer Architecture", question: "Key feature of Von Neumann Architecture?", options: ["Programs and data share same memory", "RAM+optical storage", "Software compilers only", "Execution without Control Unit"], correct: 0, explanation: "Unified memory for instructions and data." },
+            { id: 11, category: "Computer Architecture", question: "Which component fetches/decodes instructions?", options: ["ALU", "CU (Control Unit)", "RAM", "Data Bus"], correct: 1, explanation: "Control Unit coordinates fetching and decoding." },
+            { id: 12, category: "Computer Architecture", question: "Function of registers (PC, IR)?", options: ["Permanent disk storage", "High-speed temporary storage inside CPU", "Display graphics", "Transfer audio"], correct: 1, explanation: "Registers = instant CPU-accessible storage." },
+            { id: 13, category: "Computer Architecture", question: "Physical wire pathways for signals?", options: ["Compilers", "Busses", "Variables", "Directives"], correct: 1, explanation: "Busses = address/data/control wire sets." },
+            { id: 14, category: "Structured Programming", question: "Three structures of Structured Program Theorem?", options: ["Compilation, Linking, Execution", "Sequence, Selection, Iteration", "Variables, Constants, Functions", "Input, Output, Processing"], correct: 1, explanation: "Sequence, Selection, Iteration are sufficient." },
+            { id: 15, category: "Structured Programming", question: "Executing statements linearly is which structure?", options: ["Selection", "Iteration", "Sequence", "Recursion"], correct: 2, explanation: "Sequence = linear step-by-step." },
+            { id: 16, category: "Structured Programming", question: "Which structure branches on boolean evaluation?", options: ["Sequence", "Selection", "Iteration", "Header inclusion"], correct: 1, explanation: "Selection = if/if-else branching." },
+            { id: 17, category: "C++ Basics & Compilation", question: "Handles # directives before compilation?", options: ["Linker", "Preprocessor", "CPU", "Assembler"], correct: 1, explanation: "Preprocessor expands macros/headers." },
+            { id: 18, category: "C++ Basics & Compilation", question: "Output of C++ compiler?", options: ["Source code", "Executable (.exe)", "Object code (.obj)", "Flowchart"], correct: 2, explanation: "Compiler → machine/object code." },
+            { id: 19, category: "C++ Basics & Compilation", question: "Combines object files with libraries?", options: ["Preprocessor", "Linker", "Editor", "Debugger"], correct: 1, explanation: "Linker produces executable." },
+            { id: 20, category: "C++ Basics & Compilation", question: "How do variables differ from constants?", options: ["Variables fixed", "Variables change; const fixed", "Constants use no RAM", "Linker sets variables"], correct: 1, explanation: "const = immutable; variables can change." },
+            { id: 21, category: "Data Types & Memory", question: "Which provides 8-byte high-precision decimal?", options: ["float", "double", "int", "char"], correct: 1, explanation: "double = 8 bytes for accuracy." },
+            { id: 22, category: "Data Types & Memory", question: "How to enclose a char literal?", options: ["Double quotes", "Single quotes", "Parentheses", "Angle brackets"], correct: 1, explanation: "char uses single quotes 'A'." },
+            { id: 23, category: "Data Types & Memory", question: "Size and purpose of bool?", options: ["4 bytes text", "1 byte True/False", "8 bytes integers", "2 bytes pointers"], correct: 1, explanation: "bool = 1 byte, true/false." },
+            { id: 24, category: "Operators & Expressions", question: "Result of 7/2 in C++?", options: ["3.5", "3", "4", "3.0"], correct: 1, explanation: "Integer division truncates to 3." },
+            { id: 25, category: "Operators & Expressions", question: "What does 10%3 return?", options: ["3", "1", "3.33", "true"], correct: 1, explanation: "Modulus = remainder 1." },
+            { id: 26, category: "Operators & Expressions", question: "Which evaluates first?", options: ["+, -", "()", ">, <", "="], correct: 1, explanation: "Parentheses highest priority." },
+            { id: 27, category: "Operators & Expressions", question: "int x = 10 - 4 / 2 + 3; result?", options: ["6", "11", "9", "8"], correct: 1, explanation: "4/2=2; 10-2+3=11." },
+            { id: 28, category: "Decision Making", question: "Equality operator in C++?", options: ["=", "==", "===", "!="], correct: 1, explanation: "== compares; = assigns." },
+            { id: 29, category: "Decision Making", question: "When does else execute?", options: ["if true", "if false", "always", "during compile"], correct: 1, explanation: "else runs when if test is false." },
+            { id: 30, category: "Decision Making", question: "marks=45; if(marks>=50)... prints?", options: ["Pass", "Fail", "Pass Fail", "Error"], correct: 1, explanation: "45<50 → Fail." }
+        ];
+
+        const defaultDefinitions = [
+            { term: "Problem Solving", category: "Problem Solving", definition: "A step-by-step logical process used to analyze a complex task and develop an efficient solution using a computer program." },
+            { term: "1. Problem Definition", category: "Problem Solving", definition: "Clearly understanding the problem and identifying what needs to be solved." },
+            { term: "2. Problem Analysis", category: "Problem Solving", definition: "Identifying the required inputs, processing logic, and expected outputs." },
+            { term: "3. Designing the Solution", category: "Problem Solving", definition: "Creating a logical plan using algorithms or flowcharts before writing code." },
+            { term: "4. Coding", category: "Problem Solving", definition: "Translating the algorithm into a specific programming language (e.g., C++)." },
+            { term: "5. Testing & Debugging", category: "Problem Solving", definition: "Running the program with sample data to find and fix errors (bugs)." },
+            { term: "Algorithm", category: "Algorithms & Flowcharts", definition: "A finite, ordered sequence of step-by-step instructions designed to solve a specific problem. Characteristics: Clear, finite, language-independent." },
+            { term: "Pseudo-code", category: "Algorithms & Flowcharts", definition: "An informal, high-level description of a program's logic written in plain English. Example: INPUT A,B → SUM=A+B → PRINT SUM." },
+            { term: "Flowchart", category: "Algorithms & Flowcharts", definition: "A graphical representation of an algorithm using standard geometric symbols." },
+            { term: "Oval Symbol (Terminal)", category: "Algorithms & Flowcharts", definition: "Indicates the Start or End of a flowchart." },
+            { term: "Parallelogram Symbol (Input/Output)", category: "Algorithms & Flowcharts", definition: "Represents reading data (cin) or displaying output (cout)." },
+            { term: "Rectangle Symbol (Process)", category: "Algorithms & Flowcharts", definition: "Represents calculations, data assignments, or operations." },
+            { term: "Diamond Symbol (Decision)", category: "Algorithms & Flowcharts", definition: "Represents conditional branching (True/False decision)." },
+            { term: "Circle / Pentagon Symbol (Connector)", category: "Algorithms & Flowcharts", definition: "Connects different flow lines on the same or a different page." },
+            { term: "Von Neumann Architecture", category: "Computer Architecture", definition: "A foundational model where programs and data share the same stored memory system." },
+            { term: "CPU (Central Processing Unit)", category: "Computer Architecture", definition: "The brain of the computer that executes program instructions." },
+            { term: "ALU (Arithmetic Logic Unit)", category: "Computer Architecture", definition: "Performs arithmetic (+, -, *, /) and logical (>, <, ==) operations." },
+            { term: "CU (Control Unit)", category: "Computer Architecture", definition: "Directs and coordinates system operations by fetching and decoding instructions." },
+            { term: "Memory Unit (RAM)", category: "Computer Architecture", definition: "Primary storage that holds active data and running program instructions." },
+            { term: "Registers", category: "Computer Architecture", definition: "High-speed temporary storage inside CPU (e.g., PC, IR)." },
+            { term: "Input/Output Devices", category: "Computer Architecture", definition: "Interfaces to interact with users (keyboard, display)." },
+            { term: "Busses", category: "Computer Architecture", definition: "Physical wire pathways transporting address, data, and control signals." },
+            { term: "Structured Program Theorem", category: "Structured Programming", definition: "Any computable function can be constructed using only three structures: Sequence, Selection, and Iteration." },
+            { term: "Sequence Structure", category: "Structured Programming", definition: "Executing instructions strictly one after another in order." },
+            { term: "Selection Structure", category: "Structured Programming", definition: "Choosing between alternative paths based on a condition (if, if-else)." },
+            { term: "Iteration Structure (Looping)", category: "Structured Programming", definition: "Repeating instructions until a condition is met (while, for)." },
+            { term: "Preprocessor Step", category: "C++ Basics & Compilation", definition: "Processes directives starting with # (e.g., #include)." },
+            { term: "Compiler Step", category: "C++ Basics & Compilation", definition: "Translates source (.cpp) into low-level machine/object code (.obj)." },
+            { term: "Linker Step", category: "C++ Basics & Compilation", definition: "Combines object code with C++ libraries to produce a runnable executable (.exe)." },
+            { term: "Variable", category: "C++ Basics & Compilation", definition: "A named memory location whose value can change during program execution." },
+            { term: "Constant (const)", category: "C++ Basics & Compilation", definition: "A fixed value declared with const that cannot be modified (e.g., const double PI = 3.14159;)." },
+            { term: "int (Integer)", category: "Data Types & Memory", definition: "Stores whole numbers (4 bytes). Example: int age = 20;" },
+            { term: "float (Floating-point)", category: "Data Types & Memory", definition: "Stores fractional decimals up to 6 places (4 bytes). Example: float price = 99.50;" },
+            { term: "double (Double)", category: "Data Types & Memory", definition: "High-precision decimals (8 bytes). Example: double pi = 3.14159265;" },
+            { term: "char (Character)", category: "Data Types & Memory", definition: "Stores a single character in single quotes (1 byte). Example: char grade = 'A';" },
+            { term: "string (String)", category: "Data Types & Memory", definition: "Stores text in double quotes. Example: string name = \"Ali\";" },
+            { term: "bool (Boolean)", category: "Data Types & Memory", definition: "True or False flag (1 byte). Example: bool isPass = true;" },
+            { term: "cout << (Insertion Operator)", category: "C++ Basics & Compilation", definition: "Used to print output to the screen." },
+            { term: "cin >> (Extraction Operator)", category: "C++ Basics & Compilation", definition: "Used to accept input from the user." },
+            { term: "Arithmetic Operators", category: "Operators & Expressions", definition: "+ (Addition), - (Subtraction), * (Multiplication), / (Division)." },
+            { term: "Modulus Operator (%)", category: "Operators & Expressions", definition: "Returns the remainder of integer division (e.g., 10 % 3 = 1)." },
+            { term: "Integer Division Rule", category: "Operators & Expressions", definition: "C++ truncates the decimal part without rounding. Example: 7 / 2 = 3 (not 3.5)." },
+            { term: "Operator Precedence & Associativity", category: "Operators & Expressions", definition: "1. Parentheses () → 2. *, /, % → 3. +, -. Left-to-right for equal precedence." },
+            { term: "Relational & Equality Operators", category: "Decision Making", definition: "==, !=, >, <, >=, <=." },
+            { term: "if Statement", category: "Decision Making", definition: "Executes a block only if the condition is true. Example: if (age >= 18) { cout << \"Vote\"; }" },
+            { term: "if-else Statement", category: "Decision Making", definition: "Runs if block when true; else block otherwise. Example: if (marks >= 50) { cout << \"Pass\"; } else { cout << \"Fail\"; }" }
+        ];
+
+        const shortQuestionPool = [
+            { q: "Define an algorithm and list its key characteristics.", keywords: ["finite", "steps", "unambiguous", "clear", "language"] },
+            { q: "What is a flowchart? Name the standard symbols used in it.", keywords: ["graphical", "oval", "parallelogram", "rectangle", "diamond"] },
+            { q: "Differentiate between a variable and a constant in C++.", keywords: ["change", "const", "fixed", "memory"] },
+            { q: "Explain integer division and the modulus operator with examples.", keywords: ["truncate", "remainder", "modulus", "division"] },
+            { q: "List the five steps of the problem solving process.", keywords: ["definition", "analysis", "design", "coding", "testing"] },
+            { q: "Describe the Von Neumann architecture in your own words.", keywords: ["memory", "instructions", "data", "stored"] },
+            { q: "Name the main components of the CPU and state one function of each.", keywords: ["alu", "control", "registers", "arithmetic"] },
+            { q: "State the three control structures of structured programming and explain each briefly.", keywords: ["sequence", "selection", "iteration"] },
+            { q: "Explain the role of the preprocessor, compiler and linker in building a C++ program.", keywords: ["preprocessor", "compiler", "linker", "object", "executable"] },
+            { q: "Describe the C++ data types int, float, double and char.", keywords: ["int", "float", "double", "char", "bytes"] },
+            { q: "What is the difference between an if statement and an if-else statement?", keywords: ["condition", "true", "false", "block"] },
+            { q: "Explain operator precedence in C++ with an example.", keywords: ["parentheses", "multiplication", "division", "addition"] },
+            { q: "What are cout and cin used for in C++?", keywords: ["output", "input", "stream", "console"] },
+            { q: "Explain the selection structure with a small example.", keywords: ["if", "condition", "true", "false", "branch"] },
+            { q: "Explain the iteration (looping) structure with a small example.", keywords: ["loop", "repeat", "condition", "while", "for"] }
+        ];
+
+        const longQuestionPool = [
+            { q: "Explain all steps of the problem solving process in detail, and describe how an algorithm and flowchart fit into the design stage.", keywords: ["definition", "analysis", "design", "coding", "testing", "debugging", "algorithm", "flowchart"] },
+            { q: "Explain the Von Neumann architecture and describe the role of the ALU, Control Unit, registers and busses in program execution.", keywords: ["von neumann", "memory", "alu", "control unit", "registers", "busses", "fetch", "decode"] },
+            { q: "Describe the complete compilation process of a C++ program and explain the Structured Program Theorem with its three control structures.", keywords: ["preprocessor", "compiler", "linker", "object", "executable", "sequence", "selection", "iteration"] }
+        ];
+
+        const TEST_SETS = {
+            "5": [{ mcqs: 10, short: [], long: null }, { mcqs: 10, short: [], long: null }, { mcqs: 10, short: [], long: null }],
+            "10": [{ mcqs: 8, short: [0, 1], long: null }, { mcqs: 8, short: [2, 3], long: null }, { mcqs: 8, short: [4, 5], long: null }],
+            "15": [{ mcqs: 10, short: [0, 1, 2, 3, 4], long: null }, { mcqs: 10, short: [5, 6, 7, 8, 9], long: null }, { mcqs: 10, short: [10, 11, 12, 13, 14], long: null }],
+            "20": [{ mcqs: 10, short: [0, 1, 2, 3, 4], long: 0 }, { mcqs: 10, short: [5, 6, 7, 8, 9], long: 1 }, { mcqs: 10, short: [10, 11, 12, 13, 14], long: 2 }]
+        };
+
+        const defaultFlowQuestions = [
+            { id: 1, title: "Sum of Two Numbers", description: "Draw a flowchart to input two numbers, calculate their sum and display it.", requiredShapes: ["oval", "parallelogram", "rectangle"], keywords: ["start", "input", "sum", "output", "end"] },
+            { id: 2, title: "Even or Odd Number", description: "Draw a flowchart to check whether a number is even or odd.", requiredShapes: ["oval", "parallelogram", "diamond"], keywords: ["start", "input", "even", "odd", "end"] },
+            { id: 3, title: "Largest of Two Numbers", description: "Draw a flowchart to find the largest of two numbers.", requiredShapes: ["oval", "parallelogram", "diamond"], keywords: ["start", "input", "largest", "end"] },
+            { id: 4, title: "Area of a Rectangle", description: "Draw a flowchart to calculate and display the area of a rectangle.", requiredShapes: ["oval", "parallelogram", "rectangle"], keywords: ["start", "input", "area", "output", "end"] },
+            { id: 5, title: "Print Numbers 1 to 10", description: "Draw a flowchart using a loop to print 1 to 10.", requiredShapes: ["oval", "rectangle", "diamond"], keywords: ["start", "loop", "print", "end"] }
+        ];
+
+        let topicList = loadArray('cs_topics_v4', defaultTopics);
+        let questionBank = loadArray('cs_questions_v4', defaultQuestions);
+        let definitionBank = loadArray('cs_definitions_v4', defaultDefinitions);
+        let flowQuestions = loadArray('cs_flow_questions_v3', defaultFlowQuestions);
+        let testSetCounter = loadObject('cs_test_counters_v3', { "5": 0, "10": 0, "15": 0, "20": 0 });
+
+        const SECRET_PASSKEY = "taha123";
+
+        let activeExam = { questions: [], subjectives: { short: [], long: null }, subjectiveResults: [], userAnswers: {}, timerInterval: null, timeRemainingSec: 0, cheatWarnings: 0, isExamActive: false, timeSpentSec: 0 };
+        let flowState = { connectMode: false, arrowSource: null, connections: [] };
+        let flowNodeCounter = 0;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            try {
+                document.getElementById('footer-year').innerText = new Date().getFullYear();
+                populateTopicDropdowns();
+                renderDefinitionsGrid(definitionBank);
+                renderFlowQuestionOptions();
+                updateTotalQuestionsBadge();
+                setupAntiCheatListeners();
+                updateNavLockState();
+                
+                // Ensure code editor is completely empty on load
+                document.getElementById('cpp-code-editor').value = '';
+            } catch (err) { console.error('Init error:', err); }
+        });
+
+        /* ===== TOPIC DROPDOWNS ===== */
+        function populateTopicDropdowns() {
+            try {
+                const quizSelect = document.getElementById('quiz-category-select');
+                if (quizSelect) {
+                    quizSelect.innerHTML = '';
+                    const allOpt = document.createElement('option');
+                    allOpt.value = 'all'; allOpt.selected = true;
+                    allOpt.textContent = 'All Topics Mixed (' + questionBank.length + ' Qs)';
+                    quizSelect.appendChild(allOpt);
+                    topicList.forEach(function (t) {
+                        const opt = document.createElement('option');
+                        opt.value = t;
+                        const count = questionBank.filter(function (q) { return q.category === t; }).length;
+                        opt.textContent = t + ' (' + count + ' Qs)';
+                        quizSelect.appendChild(opt);
+                    });
+                }
+                const defFilter = document.getElementById('def-category-filter');
+                if (defFilter) {
+                    defFilter.innerHTML = '';
+                    const allDef = document.createElement('option');
+                    allDef.value = 'all'; allDef.selected = true; allDef.textContent = 'All Categories';
+                    defFilter.appendChild(allDef);
+                    topicList.forEach(function (t) {
+                        const opt = document.createElement('option');
+                        opt.value = t; opt.textContent = t;
+                        defFilter.appendChild(opt);
+                    });
+                }
+                const mcqSel = document.getElementById('new-q-category');
+                if (mcqSel) {
+                    mcqSel.innerHTML = '';
+                    topicList.forEach(function (t) {
+                        const opt = document.createElement('option');
+                        opt.value = t; opt.textContent = t;
+                        mcqSel.appendChild(opt);
+                    });
+                }
+                const defSel = document.getElementById('new-def-category');
+                if (defSel) {
+                    defSel.innerHTML = '';
+                    topicList.forEach(function (t) {
+                        const opt = document.createElement('option');
+                        opt.value = t; opt.textContent = t;
+                        defSel.appendChild(opt);
+                    });
+                }
+            } catch (err) { console.error('[TOPICS] error:', err); }
+        }
+
+        function renderFlowQuestionOptions() {
+            const sel = document.getElementById('flow-question-select');
+            if (!sel) return;
+            sel.innerHTML = '';
+            flowQuestions.forEach(function (q) {
+                const opt = document.createElement('option');
+                opt.value = q.id; opt.textContent = q.title;
+                sel.appendChild(opt);
+            });
+            if (flowQuestions.length > 0) sel.value = flowQuestions[0].id;
+            loadFlowQuestion();
+        }
+
+        /* ===== NAV LOCK ===== */
+        function updateNavLockState() {
+            const locked = activeExam.isExamActive;
+            ['notes', 'editor', 'flowchart'].forEach(function (name) {
+                const deskBtn = document.getElementById('nav-tab-' + name);
+                const mobBtn = document.getElementById('mobile-nav-' + name);
+                [deskBtn, mobBtn].forEach(function (btn) {
+                    if (!btn) return;
+                    if (locked) { btn.classList.add('nav-locked'); btn.setAttribute('title', 'Locked during exam'); }
+                    else { btn.classList.remove('nav-locked'); btn.removeAttribute('title'); }
+                });
+            });
+            const creatorBtn = document.getElementById('creator-btn');
+            if (creatorBtn) {
+                if (locked) creatorBtn.classList.add('nav-locked');
+                else creatorBtn.classList.remove('nav-locked');
+            }
+        }
+
+        function switchTab(tabId) {
+            if (activeExam.isExamActive && tabId !== 'tab-quiz') {
+                alert('🔒 Exam in progress! Please finish your exam to unlock other sections.');
+                return;
+            }
+            document.querySelectorAll('.tab-content').forEach(function (el) { el.classList.add('hidden'); });
+            const target = document.getElementById(tabId);
+            if (target) target.classList.remove('hidden');
+            document.querySelectorAll('.nav-btn').forEach(function (btn) {
+                btn.classList.remove('text-teal-400', 'bg-slate-700/80', 'shadow-sm');
+                btn.classList.add('text-slate-300');
+            });
+            const activeBtn = document.getElementById('nav-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.add('text-teal-400', 'bg-slate-700/80', 'shadow-sm');
+                activeBtn.classList.remove('text-slate-300');
+            }
+        }
+
+        function toggleMobileNav() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
+
+        /* ===== PASSKEY & CREATOR ===== */
+        function promptCreatorPasskey() {
+            if (activeExam.isExamActive) { alert('🔒 Creator Studio is locked during an exam.'); return; }
+            document.getElementById('creator-passkey-input').value = '';
+            document.getElementById('passkey-error-msg').classList.add('hidden');
+            openModal('modal-passkey');
+        }
+        function handlePasskeyKeyDown(e) { if (e.key === 'Enter') { e.preventDefault(); verifyCreatorPasskey(); } }
+        function verifyCreatorPasskey() {
+            const val = document.getElementById('creator-passkey-input').value;
+            if (val === SECRET_PASSKEY) {
+                closeModal('modal-passkey');
+                populateTopicDropdowns();
+                openModal('modal-update');
+            } else {
+                document.getElementById('passkey-error-msg').classList.remove('hidden');
+            }
+        }
+
+        function showCreatorStatus(msg, type) {
+            const el = document.getElementById('creator-status');
+            if (!el) return;
+            el.textContent = msg;
+            el.className = 'mb-3 p-2.5 rounded-lg text-xs font-semibold ' + (type === 'success' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-rose-500/20 text-rose-400 border border-rose-500/30');
+            clearTimeout(el._t);
+            el._t = setTimeout(function () { el.className = 'hidden mb-3 p-2.5 rounded-lg text-xs font-semibold'; }, 4000);
+        }
+
+        /* ===== CREATOR HANDLERS (Using direct onclick instead of form submit) ===== */
+        function handleAddTopic() {
+            try {
+                const nameEl = document.getElementById('new-topic-name');
+                const name = nameEl.value.trim();
+                if (!name) { showCreatorStatus('❌ Please enter a topic name.', 'error'); return; }
+                if (topicList.indexOf(name) !== -1) { showCreatorStatus('❌ Topic already exists!', 'error'); return; }
+                
+                topicList.push(name);
+                safeSet('cs_topics_v4', JSON.stringify(topicList));
+                populateTopicDropdowns();
+                showCreatorStatus('✓ Topic "' + name + '" added successfully!', 'success');
+                nameEl.value = '';
+            } catch (err) { showCreatorStatus('❌ Error: ' + err.message, 'error'); }
+        }
+
+        function handleAddMCQ() {
+            try {
+                const category = document.getElementById('new-q-category').value;
+                const question = document.getElementById('new-q-text').value.trim();
+                const optA = document.getElementById('new-q-optA').value.trim();
+                const optB = document.getElementById('new-q-optB').value.trim();
+                const optC = document.getElementById('new-q-optC').value.trim();
+                const optD = document.getElementById('new-q-optD').value.trim();
+
+                if (!question || !optA || !optB || !optC || !optD) {
+                    showCreatorStatus('❌ Fill in question and all 4 options.', 'error'); return;
+                }
+                const newQ = {
+                    id: Date.now(), category: category || 'Uncategorized',
+                    question: question, options: [optA, optB, optC, optD],
+                    correct: parseInt(document.getElementById('new-q-correct').value, 10),
+                    explanation: document.getElementById('new-q-explain').value || 'Added by creator.'
+                };
+                questionBank.push(newQ);
+                safeSet('cs_questions_v4', JSON.stringify(questionBank));
+                populateTopicDropdowns();
+                updateTotalQuestionsBadge();
+                showCreatorStatus('✓ Question saved!', 'success');
+                document.getElementById('new-q-text').value = '';
+                document.getElementById('new-q-optA').value = '';
+                document.getElementById('new-q-optB').value = '';
+                document.getElementById('new-q-optC').value = '';
+                document.getElementById('new-q-optD').value = '';
+            } catch (err) { showCreatorStatus('❌ Error: ' + err.message, 'error'); }
+        }
+
+        function handleAddDef() {
+            try {
+                const term = document.getElementById('new-def-term').value.trim();
+                const category = document.getElementById('new-def-category').value;
+                const definition = document.getElementById('new-def-text').value.trim();
+                if (!term || !definition) { showCreatorStatus('❌ Fill in term and definition.', 'error'); return; }
+                definitionBank.push({ term: term, category: category || 'Uncategorized', definition: definition });
+                safeSet('cs_definitions_v4', JSON.stringify(definitionBank));
+                renderDefinitionsGrid(definitionBank);
+                showCreatorStatus('✓ Definition saved!', 'success');
+                document.getElementById('new-def-term').value = '';
+                document.getElementById('new-def-text').value = '';
+            } catch (err) { showCreatorStatus('❌ Error: ' + err.message, 'error'); }
+        }
+
+        function handleAddFlowQuestion() {
+            try {
+                const title = document.getElementById('new-flow-title').value.trim();
+                const description = document.getElementById('new-flow-desc').value.trim();
+                if (!title || !description) { showCreatorStatus('❌ Fill in title and description.', 'error'); return; }
+                const requiredShapes = [].slice.call(document.querySelectorAll('.flow-shape-chk:checked')).map(function (c) { return c.value; });
+                const keywords = document.getElementById('new-flow-keywords').value.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+                flowQuestions.push({
+                    id: Date.now(), title: title, description: description,
+                    requiredShapes: requiredShapes.length ? requiredShapes : ['oval', 'rectangle'],
+                    keywords: keywords.length ? keywords : ['start', 'end']
+                });
+                safeSet('cs_flow_questions_v3', JSON.stringify(flowQuestions));
+                renderFlowQuestionOptions();
+                showCreatorStatus('✓ Flowchart question saved!', 'success');
+                document.getElementById('new-flow-title').value = '';
+                document.getElementById('new-flow-desc').value = '';
+                document.getElementById('new-flow-keywords').value = '';
+            } catch (err) { showCreatorStatus('❌ Error: ' + err.message, 'error'); }
+        }
+
+        /* ===== ANTI-CHEAT ===== */
+        function setupAntiCheatListeners() {
+            window.addEventListener('blur', function () { if (activeExam.isExamActive) triggerCheatWarning("Window focus lost / Tab switched!"); });
+            document.addEventListener('visibilitychange', function () { if (document.hidden && activeExam.isExamActive) triggerCheatWarning("Tab minimized or hidden!"); });
+            document.addEventListener('contextmenu', function (e) { if (activeExam.isExamActive) { e.preventDefault(); triggerCheatWarning("Right-clicking disabled!"); } });
+        }
+        function triggerCheatWarning(reason) {
+            activeExam.cheatWarnings++;
+            const countEl = document.getElementById('cheat-warning-count');
+            if (countEl) countEl.innerText = activeExam.cheatWarnings;
+            document.getElementById('modal-cheat-count').innerText = activeExam.cheatWarnings + '/2';
+            document.getElementById('cheat-alert-msg').innerText = reason;
+            if (activeExam.cheatWarnings >= 2) { closeModal('modal-cheat-alert'); terminateExamCheat(); }
+            else { openModal('modal-cheat-alert'); }
+        }
+        function acknowledgeCheatWarning() { closeModal('modal-cheat-alert'); }
+
+        function computeTotalMarks() {
+            let m = activeExam.questions.length;
+            if (activeExam.subjectives) {
+                m += (activeExam.subjectives.short ? activeExam.subjectives.short.length : 0) * 5;
+                if (activeExam.subjectives.long) m += 10;
+            }
+            return m;
+        }
+
+        function terminateExamCheat() {
+            clearInterval(activeExam.timerInterval);
+            activeExam.isExamActive = false;
+            updateNavLockState();
+            document.getElementById('quiz-active-box').classList.add('hidden');
+            document.getElementById('quiz-results-card').classList.remove('hidden');
+            const badge = document.getElementById('result-badge-icon');
+            badge.className = "w-16 h-16 rounded-2xl mx-auto flex items-center justify-center text-3xl mb-2 bg-rose-500/20 text-rose-500 border border-rose-500";
+            badge.innerHTML = '<i class="fa-solid fa-ban"></i>';
+            document.getElementById('result-status-title').innerText = "DISQUALIFIED (Anti-Cheat)";
+            document.getElementById('result-status-subtitle').innerText = "Test terminated due to security violations.";
+            document.getElementById('res-score-percent').innerText = "0%";
+            document.getElementById('res-score-percent').className = "text-2xl sm:text-3xl font-extrabold text-rose-500";
+            document.getElementById('res-correct-count').innerText = "0 / " + computeTotalMarks();
+            document.getElementById('res-cheat-status').innerText = "Violated (2/2)";
+            document.getElementById('res-cheat-status').className = "text-xs sm:text-sm font-extrabold text-rose-400 mt-2 block";
+            document.getElementById('res-time-spent').innerText = Math.floor(activeExam.timeSpentSec / 60) + 'm ' + (activeExam.timeSpentSec % 60) + 's';
+            document.getElementById('quiz-review-container').innerHTML = '<div class="p-4 bg-rose-950/40 border border-rose-500/40 rounded-xl text-rose-300 text-sm"><strong>Zero Score:</strong> Multiple focus violations detected.</div>';
+        }
+
+        function updateTotalQuestionsBadge() {
+            const category = document.getElementById('quiz-category-select').value;
+            const badge = document.getElementById('total-questions-badge');
+            if (!badge) return;
+            if (category === 'all') badge.innerText = questionBank.length + ' Questions';
+            else badge.innerText = questionBank.filter(function (q) { return q.category === category; }).length + ' Questions';
+        }
+
+        /* ===== EXAM ===== */
+        function startExam() {
+            try {
+                const durationKey = document.getElementById('quiz-timer-select').value;
+                const duration = parseInt(durationKey, 10);
+                const category = document.getElementById('quiz-category-select').value;
+                if (!TEST_SETS[durationKey]) { alert('Test config missing. Reload.'); return; }
+                const setIdx = (testSetCounter[durationKey] || 0) % 3;
+                testSetCounter[durationKey] = setIdx + 1;
+                safeSet('cs_test_counters_v3', JSON.stringify(testSetCounter));
+                const setDef = TEST_SETS[durationKey][setIdx];
+                let pool = category === 'all' ? questionBank.slice() : questionBank.filter(function (q) { return q.category === category; });
+                if (pool.length < setDef.mcqs) pool = questionBank.slice();
+                pool.sort(function () { return Math.random() - 0.5; });
+                activeExam.questions = pool.slice(0, setDef.mcqs);
+                if (activeExam.questions.length === 0) { alert('No MCQs available.'); return; }
+                activeExam.subjectives = { short: setDef.short.map(function (i) { return shortQuestionPool[i]; }), long: setDef.long !== null ? longQuestionPool[setDef.long] : null };
+                activeExam.subjectiveResults = [];
+                activeExam.userAnswers = {};
+                activeExam.cheatWarnings = 0;
+                activeExam.timeRemainingSec = duration * 60;
+                activeExam.timeSpentSec = 0;
+                activeExam.isExamActive = true;
+                updateNavLockState();
+                document.getElementById('cheat-warning-count').innerText = "0";
+                document.getElementById('exam-set-label').innerText = setIdx + 1;
+                document.getElementById('quiz-pre-start').classList.add('hidden');
+                document.getElementById('quiz-results-card').classList.add('hidden');
+                document.getElementById('quiz-active-box').classList.remove('hidden');
+                renderActiveQuestions();
+                startExamTimer();
+            } catch (err) { console.error('startExam error:', err); alert('Could not start exam: ' + err.message); }
+        }
+
+        function renderActiveQuestions() {
+            const container = document.getElementById('quiz-questions-list');
+            container.innerHTML = '';
+            activeExam.questions.forEach(function (q, idx) {
+                const card = document.createElement('div');
+                card.className = "glass-panel p-5 sm:p-6 rounded-2xl border border-slate-700 shadow-md space-y-4";
+                let optionsHtml = '';
+                q.options.forEach(function (opt, optIdx) {
+                    optionsHtml += '<label onclick="selectAnswer(' + idx + ', ' + optIdx + ')" class="flex items-center space-x-3 p-3.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 cursor-pointer transition group">' +
+                        '<input type="radio" name="q_' + idx + '" value="' + optIdx + '" class="accent-teal-500 w-4 h-4">' +
+                        '<span class="text-xs sm:text-sm text-slate-200 group-hover:text-white font-medium">' + opt + '</span></label>';
+                });
+                card.innerHTML = '<div class="flex items-start justify-between gap-2 border-b border-slate-700/80 pb-3">' +
+                    '<span class="px-2.5 py-1 rounded-lg bg-teal-500/10 text-teal-400 text-xs font-bold border border-teal-500/20">MCQ ' + (idx + 1) + '/' + activeExam.questions.length + ' (1 Mark)</span>' +
+                    '<span class="text-xs text-slate-400 bg-slate-800 px-2 py-1 rounded border border-slate-700">' + q.category + '</span></div>' +
+                    '<h3 class="text-sm sm:text-base font-bold text-white leading-relaxed">' + q.question + '</h3>' +
+                    '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">' + optionsHtml + '</div>';
+                container.appendChild(card);
+            });
+
+            const shorts = activeExam.subjectives.short || [];
+            const longQ = activeExam.subjectives.long;
+            if (shorts.length > 0 || longQ) {
+                const wrap = document.createElement('div');
+                wrap.className = "glass-panel p-5 sm:p-6 rounded-2xl border border-indigo-500/40 shadow-md space-y-5";
+                let html = '<div class="border-b border-slate-700/80 pb-3"><h3 class="text-sm sm:text-base font-extrabold text-white flex items-center"><i class="fa-solid fa-pen-nib text-indigo-400 mr-2"></i> Written Questions — AI Evaluated</h3><p class="text-xs text-slate-400 mt-1">AI checks keywords and marks each answer.</p></div>';
+                shorts.forEach(function (sq, i) {
+                    html += '<div class="space-y-2"><div class="flex items-center justify-between"><span class="text-xs font-bold text-teal-300">Short Q' + (i + 1) + '</span><span class="text-[11px] font-bold px-2 py-0.5 rounded bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">5 Marks</span></div><p class="text-sm text-white font-semibold leading-relaxed">' + sq.q + '</p><textarea class="subj-answer w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-sm text-slate-200 h-24 focus:outline-none focus:border-teal-500 leading-relaxed" data-type="short" data-index="' + i + '" placeholder="Write your answer here..."></textarea></div>';
+                });
+                if (longQ) {
+                    html += '<div class="space-y-2 pt-2 border-t border-slate-700/60"><div class="flex items-center justify-between"><span class="text-xs font-bold text-cyan-300">Long Question</span><span class="text-[11px] font-bold px-2 py-0.5 rounded bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">10 Marks</span></div><p class="text-sm text-white font-semibold leading-relaxed">' + longQ.q + '</p><textarea class="subj-answer w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-sm text-slate-200 h-36 focus:outline-none focus:border-teal-500 leading-relaxed" data-type="long" data-index="0" placeholder="Write a detailed answer here..."></textarea></div>';
+                }
+                wrap.innerHTML = html;
+                container.appendChild(wrap);
+            }
+            updateProgressDisplay();
+        }
+
+        function selectAnswer(qIdx, optIdx) { activeExam.userAnswers[qIdx] = optIdx; updateProgressDisplay(); }
+        function updateProgressDisplay() {
+            const answered = Object.keys(activeExam.userAnswers).length;
+            const total = activeExam.questions.length;
+            document.getElementById('exam-progress-bar').style.width = (total > 0 ? (answered / total) * 100 : 0) + '%';
+            document.getElementById('exam-progress-text').innerText = 'MCQs: ' + answered + '/' + total;
+        }
+
+        function startExamTimer() {
+            clearInterval(activeExam.timerInterval);
+            activeExam.timerInterval = setInterval(function () {
+                activeExam.timeRemainingSec--;
+                activeExam.timeSpentSec++;
+                const min = Math.floor(activeExam.timeRemainingSec / 60);
+                const sec = activeExam.timeRemainingSec % 60;
+                document.getElementById('exam-timer-display').innerText = String(min).padStart(2, '0') + ':' + String(sec).padStart(2, '0');
+                if (activeExam.timeRemainingSec <= 0) {
+                    clearInterval(activeExam.timerInterval);
+                    alert("Time limit reached! Submitting...");
+                    submitExam(true);
+                }
+            }, 1000);
+        }
+
+        function aiMarkSubjective(answer, keywords, max) {
+            const text = (answer || '').toLowerCase();
+            const kws = keywords || [];
+            if (!text.trim() || kws.length === 0) return { score: 0, matched: [], missed: kws };
+            const matched = kws.filter(function (k) { return text.indexOf(k.toLowerCase()) !== -1; });
+            const missed = kws.filter(function (k) { return matched.indexOf(k) === -1; });
+            let ratio = matched.length / kws.length;
+            const wc = text.trim().split(/\s+/).length;
+            if (wc >= 15) ratio = Math.min(1, ratio + 0.05);
+            return { score: Math.min(max, Math.round(ratio * max * 10) / 10), matched: matched, missed: missed };
+        }
+        function round1(n) { return Math.round(n * 10) / 10; }
+
+        function submitExam(isAuto) {
+            const answeredMcq = Object.keys(activeExam.userAnswers).length;
+            const subjEls = [].slice.call(document.querySelectorAll('.subj-answer'));
+            const unansweredSubj = subjEls.filter(function (el) { return !el.value.trim(); }).length;
+            if (!isAuto && (answeredMcq < activeExam.questions.length || unansweredSubj > 0)) {
+                if (!confirm("Some questions unanswered! Finish anyway?")) return;
+            }
+            clearInterval(activeExam.timerInterval);
+            activeExam.isExamActive = false;
+            updateNavLockState();
+            let mcqCorrect = 0;
+            activeExam.questions.forEach(function (q, idx) { if (activeExam.userAnswers[idx] === q.correct) mcqCorrect++; });
+            let subjScore = 0, subjTotal = 0;
+            const subjResults = [];
+            subjEls.forEach(function (el) {
+                const type = el.dataset.type;
+                const idx = parseInt(el.dataset.index, 10);
+                const qObj = type === 'short' ? activeExam.subjectives.short[idx] : activeExam.subjectives.long;
+                if (!qObj) return;
+                const max = type === 'short' ? 5 : 10;
+                const result = aiMarkSubjective(el.value, qObj.keywords, max);
+                subjScore += result.score;
+                subjTotal += max;
+                subjResults.push({ type: type, question: qObj.q, answer: el.value.trim(), max: max, score: result.score, matched: result.matched, missed: result.missed });
+            });
+            const totalMarks = activeExam.questions.length + subjTotal;
+            const obtained = mcqCorrect + subjScore;
+            const scorePercent = totalMarks > 0 ? Math.round((obtained / totalMarks) * 100) : 0;
+            document.getElementById('quiz-active-box').classList.add('hidden');
+            document.getElementById('quiz-results-card').classList.remove('hidden');
+            const badge = document.getElementById('result-badge-icon');
+            if (scorePercent >= 70) {
+                badge.className = "w-16 h-16 rounded-2xl mx-auto flex items-center justify-center text-3xl mb-2 bg-emerald-500/20 text-emerald-400 border border-emerald-500";
+                badge.innerHTML = '<i class="fa-solid fa-trophy"></i>';
+                document.getElementById('result-status-title').innerText = "Passed Excellent!";
+                document.getElementById('result-status-subtitle').innerText = "Outstanding performance.";
+            } else {
+                badge.className = "w-16 h-16 rounded-2xl mx-auto flex items-center justify-center text-3xl mb-2 bg-amber-500/20 text-amber-400 border border-amber-500";
+                badge.innerHTML = '<i class="fa-solid fa-graduation-cap"></i>';
+                document.getElementById('result-status-title').innerText = "Exam Completed";
+                document.getElementById('result-status-subtitle').innerText = "Review AI feedback to improve.";
+            }
+            const scoreEl = document.getElementById('res-score-percent');
+            scoreEl.innerText = scorePercent + '%';
+            scoreEl.className = "text-2xl sm:text-3xl font-extrabold text-teal-400";
+            document.getElementById('res-correct-count').innerText = round1(obtained) + ' / ' + totalMarks;
+            document.getElementById('res-time-spent').innerText = Math.floor(activeExam.timeSpentSec / 60) + 'm ' + (activeExam.timeSpentSec % 60) + 's';
+            const cheatEl = document.getElementById('res-cheat-status');
+            cheatEl.innerText = activeExam.cheatWarnings === 0 ? "Clean (0 Warnings)" : 'Warnings (' + activeExam.cheatWarnings + ')';
+            cheatEl.className = "text-xs sm:text-sm font-extrabold mt-2 block " + (activeExam.cheatWarnings === 0 ? "text-emerald-400" : "text-amber-400");
+            const reviewContainer = document.getElementById('quiz-review-container');
+            reviewContainer.innerHTML = '';
+            activeExam.questions.forEach(function (q, idx) {
+                const userAns = activeExam.userAnswers[idx];
+                const ok = userAns === q.correct;
+                const item = document.createElement('div');
+                item.className = 'p-4 rounded-xl border text-xs sm:text-sm space-y-2 ' + (ok ? 'bg-emerald-950/20 border-emerald-500/30' : 'bg-rose-950/20 border-rose-500/30');
+                item.innerHTML = '<div class="flex items-center justify-between gap-2"><span class="font-bold text-white">MCQ ' + (idx + 1) + ': ' + q.question + '</span><span class="px-2 py-0.5 rounded font-bold text-xs ' + (ok ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400') + '">' + (ok ? 'Correct (+1)' : 'Incorrect (0)') + '</span></div>' +
+                    '<div class="text-slate-300"><p><strong>Your Answer:</strong> ' + (userAns !== undefined ? q.options[userAns] : '<em class="text-rose-400">Not Answered</em>') + '</p><p><strong>Correct Answer:</strong> <span class="text-emerald-400 font-semibold">' + q.options[q.correct] + '</span></p></div>' +
+                    '<p class="text-slate-400 text-xs italic bg-slate-900/60 p-2 rounded border border-slate-800"><strong>Explanation:</strong> ' + (q.explanation || 'N/A') + '</p>';
+                reviewContainer.appendChild(item);
+            });
+            subjResults.forEach(function (r, i) {
+                const good = r.score >= r.max * 0.5;
+                const item = document.createElement('div');
+                item.className = 'p-4 rounded-xl border text-xs sm:text-sm space-y-2 ' + (good ? 'bg-indigo-950/20 border-indigo-500/30' : 'bg-rose-950/20 border-rose-500/30');
+                item.innerHTML = '<div class="flex items-center justify-between gap-2"><span class="font-bold text-white">' + (r.type === 'short' ? ('Short Q' + (i + 1)) : 'Long Question') + ': ' + r.question + '</span><span class="px-2 py-0.5 rounded font-bold text-xs ' + (good ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400') + '">' + round1(r.score) + ' / ' + r.max + '</span></div>' +
+                    '<p class="text-slate-300"><strong>Your Answer:</strong> ' + (r.answer || '<em class="text-rose-400">Not Answered</em>') + '</p>' +
+                    '<p class="text-slate-400 text-xs italic bg-slate-900/60 p-2 rounded border border-slate-800"><strong><i class="fa-solid fa-robot mr-1"></i>AI Feedback:</strong> ' + (r.matched.length ? 'Matched: ' + r.matched.join(', ') : 'No concepts matched.') + (r.missed.length ? '. Missing: ' + r.missed.join(', ') : '') + '.</p>';
+                reviewContainer.appendChild(item);
+            });
+        }
+
+        function resetExamState() {
+            document.getElementById('quiz-results-card').classList.add('hidden');
+            document.getElementById('quiz-pre-start').classList.remove('hidden');
+            updateNavLockState();
+        }
+
+        /* ===== DEFINITIONS ===== */
+        function renderDefinitionsGrid(list) {
+            const grid = document.getElementById('definitions-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            if (list.length === 0) { grid.innerHTML = '<div class="col-span-full text-center py-10 text-slate-500">No definitions found.</div>'; return; }
+            list.forEach(function (def) {
+                const card = document.createElement('div');
+                card.className = "glass-panel p-5 rounded-2xl border border-slate-700/80 shadow-md space-y-2.5 hover:border-teal-500/50 transition";
+                card.innerHTML = '<div><span class="text-xs font-bold text-teal-400 uppercase tracking-wider bg-teal-500/10 px-2.5 py-1 rounded-md border border-teal-500/20">' + def.category + '</span></div>' +
+                    '<h3 class="text-base font-bold text-white">' + def.term + '</h3>' +
+                    '<p class="text-xs sm:text-sm text-slate-300 leading-relaxed">' + def.definition + '</p>';
+                grid.appendChild(card);
+            });
+        }
+
+        function filterDefinitions() {
+            const q = document.getElementById('def-search-input').value.toLowerCase();
+            const cat = document.getElementById('def-category-filter').value;
+            const filtered = definitionBank.filter(function (item) {
+                const mc = cat === 'all' || item.category === cat;
+                const ms = item.term.toLowerCase().indexOf(q) !== -1 || item.definition.toLowerCase().indexOf(q) !== -1;
+                return mc && ms;
+            });
+            renderDefinitionsGrid(filtered);
+        }
+
+        /* ===== CODE LAB (Updated Simulator & Evaluator) ===== */
+        function clearCode() { document.getElementById('cpp-code-editor').value = ''; }
+
+        function analyzeCppCode(code) {
+            const errors = [];
+            const stripped = code.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/[^\n]*/g, '').replace(/"(?:[^"\\]|\\.)*"/g, '""').replace(/'(?:[^'\\]|\\.)*'/g, "''");
+            function checkBalance(str, open, close, label) {
+                let depth = 0;
+                for (let i = 0; i < str.length; i++) {
+                    if (str[i] === open) depth++;
+                    else if (str[i] === close) { depth--; if (depth < 0) { errors.push({ message: 'Unmatched closing ' + label, severity: 'error' }); return; } }
+                }
+                if (depth > 0) errors.push({ message: 'Unclosed ' + label, severity: 'error' });
+            }
+            checkBalance(stripped, '{', '}', 'curly brace');
+            checkBalance(stripped, '(', ')', 'parenthesis');
+            
+            if ((code.match(/(?<!\\)"/g) || []).length % 2 !== 0) errors.push({ message: 'Unclosed double quote', severity: 'error' });
+            if (/===/.test(code)) errors.push({ message: 'Invalid "==="', severity: 'error' });
+            if (/=\s*;/.test(code)) errors.push({ message: 'Empty expression after "="', severity: 'error' });
+
+            code.split('\n').forEach(function (line, i) {
+                const trimmed = line.trim();
+                if (!trimmed || trimmed.length < 2) return;
+                if (trimmed.startsWith('//') || trimmed.startsWith('/*') || trimmed.startsWith('#') || /^[{}]+$/.test(trimmed)) return;
+                if (/^(if|else|while|for|switch|case|default|do)\b/.test(trimmed)) return;
+                if (/^(return|break|continue)\b/.test(trimmed) && !trimmed.endsWith(';')) { errors.push({ line: i + 1, message: 'Missing semicolon after "' + trimmed.split(/\s/)[0] + '"', severity: 'error' }); return; }
+                if (/[;{},:]$/.test(trimmed) || trimmed.endsWith(')')) return;
+                if (/^(cout|cin)\b/.test(trimmed) && !trimmed.endsWith(';')) { errors.push({ line: i + 1, message: 'Missing semicolon after I/O', severity: 'error' }); return; }
+                if (/^(int|float|double|char|bool|string|auto|long|short|void|const)\s+[a-zA-Z_]\w*\s*(=|\()/.test(trimmed) && !trimmed.endsWith(';') && !trimmed.endsWith(')')) { errors.push({ line: i + 1, message: 'Missing semicolon after declaration', severity: 'error' }); return; }
+            });
+            return { errors: errors, hasCriticalError: errors.some(function (e) { return e.severity === 'error'; }) };
+        }
+
+        function runCodeSimulator() {
+            const code = document.getElementById('cpp-code-editor').value;
+            const out = document.getElementById('code-console-output');
+            out.innerHTML = '';
+            if (!code.trim()) { out.innerHTML = '<span class="text-rose-400">[Error] Code is empty.</span>'; return; }
+            
+            const analysis = analyzeCppCode(code);
+            if (analysis.hasCriticalError) {
+                let html = '<span class="text-rose-400 font-bold">[Compilation Failed] Fix syntax errors first.</span><br>';
+                analysis.errors.forEach(function (err) { html += '<span class="text-rose-300">  line ' + (err.line || '?') + ': ' + err.message + '</span><br>'; });
+                out.innerHTML = html;
+                return;
+            }
+
+            // Improved simulator: Extracts variables and evaluates simple cout expressions
+            let vars = {};
+            let varRegex = /(int|float|double|char)\s+([^;]+);/g;
+            let match;
+            while ((match = varRegex.exec(code)) !== null) {
+                let parts = match[2].split(',');
+                parts.forEach(p => {
+                    let kv = p.split('=');
+                    if (kv.length === 2) {
+                        let val = kv[1].trim();
+                        if (!isNaN(val)) vars[kv[0].trim()] = Number(val);
+                        else if (val.startsWith('"') && val.endsWith('"')) vars[kv[0].trim()] = val.slice(1, -1);
+                        else if (val.startsWith("'") && val.endsWith("'")) vars[kv[0].trim()] = val.slice(1, -1);
+                    }
+                });
+            }
+
+            const lines = [];
+            const coutRegex = /cout\s*<<\s*([^;]+);/g;
+            while ((match = coutRegex.exec(code)) !== null) {
+                let expr = match[1];
+                let parts = expr.split('<<');
+                let lineOut = '';
+                parts.forEach(part => {
+                    part = part.trim();
+                    if (part === 'endl' || part === 'std::endl') return;
+                    if (part.startsWith('"') && part.endsWith('"')) {
+                        lineOut += part.slice(1, -1);
+                    } else {
+                        try {
+                            let evalExpr = part;
+                            for (let v in vars) {
+                                evalExpr = evalExpr.replace(new RegExp('\\b' + v + '\\b', 'g'), JSON.stringify(vars[v]));
+                            }
+                            // Very basic eval for math
+                            lineOut += eval(evalExpr);
+                        } catch (e) {
+                            lineOut += part;
+                        }
+                    }
+                });
+                lines.push(lineOut);
+            }
+
+            if (lines.length === 0) lines.push("Program executed successfully. No cout statements found.");
+            let html = '<span class="text-emerald-400 font-bold">[Compiled — Exit Code 0]</span><br>';
+            html += lines.map(function (l) { return '<span class="text-slate-200">> ' + l + '</span>'; }).join('<br>');
+            out.innerHTML = html;
+        }
+
+        function evaluateCodeAI() {
+            const code = document.getElementById('cpp-code-editor').value;
+            const box = document.getElementById('ai-evaluation-box');
+            box.innerHTML = '<div class="text-teal-400 animate-pulse"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Analyzing...</div>';
+            setTimeout(function () {
+                if (!code.trim()) { box.innerHTML = '<div class="text-rose-400 font-bold mb-1">Score: 0 / 100</div><div class="text-rose-300">• Empty code.</div>'; return; }
+                const analysis = analyzeCppCode(code);
+                let score = 100;
+                const fb = [];
+                
+                if (analysis.hasCriticalError) { score -= Math.min(80, analysis.errors.length * 20); fb.push('❌ ' + analysis.errors.length + ' syntax error(s) — would NOT compile.'); }
+                
+                // Strict checks
+                const hasInclude = /#include\s*<iostream>/.test(code);
+                if (!hasInclude && code.length > 40) { score -= 20; fb.push('❌ Missing "#include <iostream>".'); }
+                
+                // Check namespace
+                const hasStd = /using\s+namespace\s+std/.test(code) || /std::/.test(code);
+                if (!hasStd && (code.includes('cout') || code.includes('cin'))) {
+                    score -= 30; 
+                    fb.push('❌ Used "cout"/"cin" without "using namespace std;" or "std::". This will cause a compile error.');
+                }
+
+                const hasMain = /int\s+main\s*\(/.test(code);
+                if (!hasMain) { score -= 20; fb.push('❌ Missing "int main()" entry point.'); }
+                
+                const hasReturn = /return\s+0\s*;/.test(code);
+                if (!hasReturn) { score -= 10; fb.push('⚠ Missing "return 0;".'); }
+
+                if (code.length < 30) { score -= 30; fb.push('❌ Code is too brief.'); }
+                
+                score = Math.max(0, Math.min(100, score));
+                if (analysis.hasCriticalError && score > 60) score = 60;
+                
+                const color = score >= 80 ? 'bg-emerald-500/20 text-emerald-400' : score >= 50 ? 'bg-amber-500/20 text-amber-400' : 'bg-rose-500/20 text-rose-400';
+                let html = '<div class="flex items-center justify-between border-b border-slate-700 pb-2 mb-2"><span class="font-bold text-white text-xs">AI Evaluation:</span><span class="px-2 py-0.5 rounded font-black text-xs ' + color + '">' + score + ' / 100</span></div>';
+                
+                if (analysis.errors.length > 0) {
+                    html += '<div class="mb-1"><strong class="text-rose-400 text-[11px]">Syntax Issues:</strong></div>';
+                    analysis.errors.forEach(function (err) { html += '<p class="text-rose-300 text-[11px]">• ' + (err.line ? 'line ' + err.line + ': ' : '') + err.message + '</p>'; });
+                }
+                
+                if (fb.length) { html += '<div class="mt-2 mb-1"><strong class="text-slate-200 text-[11px]">Feedback:</strong></div>'; fb.forEach(function (f) { html += '<p class="text-slate-300 text-[11px]">• ' + f + '</p>'; }); }
+                
+                if (score === 100) html += '<p class="text-emerald-400 text-[11px] mt-2">✓ Perfect! Clean syntax, proper structure.</p>';
+                else if (analysis.hasCriticalError) html += '<p class="text-rose-400 text-[11px] mt-2 italic">⚠ Fix the errors above to improve your score.</p>';
+                
+                box.innerHTML = html;
+            }, 500);
+        }
+
+        /* ===== FLOWCHART (Mobile Fixed, No Auto Text) ===== */
+        function loadFlowQuestion() {
+            const sel = document.getElementById('flow-question-select');
+            if (!sel) return;
+            const q = flowQuestions.find(function (x) { return String(x.id) === String(sel.value); });
+            const desc = document.getElementById('flow-question-desc');
+            if (desc) desc.innerHTML = q ? '<i class="fa-solid fa-circle-info mr-1 text-teal-400"></i>' + q.description : 'Select a task.';
+            const box = document.getElementById('flow-score-box');
+            if (box) { box.classList.add('hidden'); box.innerHTML = ''; }
+        }
+
+        function addFlowNode(type) {
+            const hint = document.getElementById('flow-empty-hint');
+            if (hint) hint.classList.add('hidden');
+            const container = document.getElementById('flow-nodes-container');
+            const canvas = document.getElementById('flowchart-canvas');
+            
+            const id = 'node_' + Date.now() + '_' + (flowNodeCounter++);
+            let shapeClasses = '', innerRotate = '';
+            if (type === 'oval') { shapeClasses = "w-32 h-14 bg-teal-950/80 border-2 border-teal-400 text-teal-200 rounded-full"; }
+            else if (type === 'parallelogram') { shapeClasses = "w-36 h-14 bg-emerald-950/80 border-2 border-emerald-400 text-emerald-200 skew-x-[-12deg]"; }
+            else if (type === 'diamond') { shapeClasses = "w-28 h-28 bg-amber-950/80 border-2 border-amber-400 text-amber-200 rotate-45"; innerRotate = "-rotate-45"; }
+            else { shapeClasses = "w-32 h-16 bg-sky-950/80 border-2 border-sky-400 text-sky-200 rounded-lg"; }
+            
+            const node = document.createElement('div');
+            node.id = id; node.dataset.shape = type;
+            node.className = 'fc-node absolute flex items-center justify-center p-2 text-xs font-bold text-center shadow-lg ' + shapeClasses;
+            
+            // Safe positioning to prevent going off-screen on mobile
+            const cw = canvas.clientWidth || 300;
+            const ch = canvas.clientHeight || 500;
+            const x = Math.max(20, Math.min(cw - 150, 40 + (container.children.length * 20)));
+            const y = Math.max(20, Math.min(ch - 100, 40 + (container.children.length * 40)));
+            
+            node.style.left = x + 'px';
+            node.style.top = y + 'px';
+            
+            // User requested NO auto text
+            const textWrap = document.createElement('div');
+            textWrap.contentEditable = 'true';
+            textWrap.className = 'outline-none min-w-[40px] min-h-[1em] leading-tight ' + innerRotate;
+            // textWrap.textContent = ""; // Empty by default
+            
+            node.appendChild(textWrap);
+            container.appendChild(node);
+            makeNodeDraggable(node);
+        }
+
+        function makeNodeDraggable(elmnt) {
+            let isDragging = false;
+            let startX, startY, initialX, initialY;
+
+            elmnt.addEventListener('pointerdown', function(e) {
+                if (flowState.connectMode) {
+                    handleArrowNodeClick(elmnt);
+                    return;
+                }
+                // Allow typing if clicking on the editable div
+                if (e.target.isContentEditable && document.activeElement === e.target) {
+                    return;
+                }
+                
+                isDragging = true;
+                startX = e.clientX;
+                startY = e.clientY;
+                initialX = elmnt.offsetLeft;
+                initialY = elmnt.offsetTop;
+                elmnt.setPointerCapture(e.pointerId);
+            });
+
+            elmnt.addEventListener('pointermove', function(e) {
+                if (!isDragging) return;
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
+                elmnt.style.left = (initialX + dx) + 'px';
+                elmnt.style.top = (initialY + dy) + 'px';
+                redrawArrows();
+            });
+
+            elmnt.addEventListener('pointerup', function(e) {
+                isDragging = false;
+                elmnt.releasePointerCapture(e.pointerId);
+            });
+        }
+
+        function toggleArrowMode() { flowState.connectMode = !flowState.connectMode; flowState.arrowSource = null; updateArrowButtonUI(); }
+        function updateArrowButtonUI() {
+            const btn = document.getElementById('arrow-tool-btn');
+            const nodes = document.querySelectorAll('#flow-nodes-container .fc-node');
+            if (flowState.connectMode) {
+                btn.className = "px-3 py-1.5 rounded-lg bg-teal-500 text-slate-950 border border-teal-400 text-xs font-bold shadow-lg shadow-teal-500/30";
+                btn.innerHTML = '<i class="fa-solid fa-arrow-right mr-1"></i> Arrow ON';
+                nodes.forEach(function (n) { n.classList.add('ring-2', 'ring-teal-400/60'); });
+            } else {
+                btn.className = "px-3 py-1.5 rounded-lg bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 text-xs font-bold hover:bg-indigo-500/30";
+                btn.innerHTML = '<i class="fa-solid fa-arrow-right mr-1"></i> Arrow Tool';
+                nodes.forEach(function (n) { n.classList.remove('ring-2', 'ring-teal-400/60', 'ring-4', 'ring-teal-300'); });
+            }
+        }
+        
+        function handleArrowNodeClick(node) {
+            if (!flowState.arrowSource) { flowState.arrowSource = node.id; node.classList.add('ring-4', 'ring-teal-300'); }
+            else if (flowState.arrowSource === node.id) { const s = document.getElementById(flowState.arrowSource); if (s) s.classList.remove('ring-4', 'ring-teal-300'); flowState.arrowSource = null; }
+            else { flowState.connections.push({ from: flowState.arrowSource, to: node.id }); const s = document.getElementById(flowState.arrowSource); if (s) s.classList.remove('ring-4', 'ring-teal-300'); flowState.arrowSource = null; redrawArrows(); }
+        }
+
+        function redrawArrows() {
+            const svg = document.getElementById('flow-svg-layer');
+            if (!svg) return;
+            svg.querySelectorAll('line.flow-arrow').forEach(function (l) { l.remove(); });
+            flowState.connections = flowState.connections.filter(function (c) { return document.getElementById(c.from) && document.getElementById(c.to); });
+            flowState.connections.forEach(function (c) {
+                const fromEl = document.getElementById(c.from), toEl = document.getElementById(c.to);
+                const x1 = fromEl.offsetLeft + fromEl.offsetWidth / 2, y1 = fromEl.offsetTop + fromEl.offsetHeight / 2;
+                const x2 = toEl.offsetLeft + toEl.offsetWidth / 2, y2 = toEl.offsetTop + toEl.offsetHeight / 2;
+                const dx = x2 - x1, dy = y2 - y1;
+                const dist = Math.hypot(dx, dy) || 1;
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('class', 'flow-arrow');
+                line.setAttribute('x1', x1 + (dx / dist) * 28);
+                line.setAttribute('y1', y1 + (dy / dist) * 28);
+                line.setAttribute('x2', x2 - (dx / dist) * 46);
+                line.setAttribute('y2', y2 - (dy / dist) * 46);
+                line.setAttribute('stroke', '#14b8a6');
+                line.setAttribute('stroke-width', '2.5');
+                line.setAttribute('marker-end', 'url(#arrowhead)');
+                svg.appendChild(line);
+            });
+        }
+
+        function clearFlowchartCanvas() {
+            document.getElementById('flow-nodes-container').innerHTML = '';
+            flowState.connections = []; flowState.arrowSource = null;
+            if (flowState.connectMode) { flowState.connectMode = false; updateArrowButtonUI(); }
+            redrawArrows();
+            const hint = document.getElementById('flow-empty-hint');
+            if (hint) hint.classList.remove('hidden');
+            const box = document.getElementById('flow-score-box');
+            if (box) { box.classList.add('hidden'); box.innerHTML = ''; }
+        }
+
+        function checkFlowchartAI() {
+            const sel = document.getElementById('flow-question-select');
+            const q = flowQuestions.find(function (x) { return String(x.id) === String(sel.value); });
+            const box = document.getElementById('flow-score-box');
+            if (!q || !box) return;
+            const nodes = [].slice.call(document.querySelectorAll('#flow-nodes-container .fc-node'));
+            if (nodes.length === 0) {
+                box.classList.remove('hidden');
+                box.className = "p-4 rounded-xl border bg-rose-950/30 border-rose-500/40 text-rose-300 text-xs sm:text-sm";
+                box.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1"></i> Canvas is empty.';
+                return;
+            }
+            const textAll = nodes.map(function (n) { return (n.innerText || '').toLowerCase(); }).join(' ');
+            const shapesPresent = nodes.map(function (n) { return n.dataset.shape; }).filter(function (v, i, a) { return a.indexOf(v) === i; });
+            const required = q.requiredShapes || [];
+            const keywords = q.keywords || [];
+            const missingShapes = required.filter(function (s) { return shapesPresent.indexOf(s) === -1; });
+            const matchedKeys = keywords.filter(function (k) { return textAll.indexOf(k.toLowerCase()) !== -1; });
+            const missingKeys = keywords.filter(function (k) { return matchedKeys.indexOf(k) === -1; });
+            const total = Math.round(((required.length ? (required.length - missingShapes.length) / required.length * 5 : 5) + (keywords.length ? matchedKeys.length / keywords.length * 5 : 5)) * 10) / 10;
+            const pass = total >= 5;
+            box.classList.remove('hidden');
+            box.className = 'p-4 rounded-xl border text-xs sm:text-sm space-y-2 ' + (pass ? 'bg-emerald-950/30 border-emerald-500/40 text-emerald-200' : 'bg-amber-950/30 border-amber-500/40 text-amber-200');
+            box.innerHTML = '<div class="flex items-center justify-between gap-2"><span class="font-bold"><i class="fa-solid fa-robot mr-1"></i> AI Evaluation — ' + q.title + '</span><span class="px-2.5 py-0.5 rounded-lg font-black ' + (pass ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300') + '">' + total + ' / 10</span></div>' +
+                '<p><strong>Shapes used:</strong> ' + (shapesPresent.join(', ') || 'None') + '</p>' +
+                '<p><strong>Required:</strong> ' + (required.join(', ') || '—') + '</p>' +
+                (missingShapes.length ? '<p class="text-rose-300"><strong>Missing shapes:</strong> ' + missingShapes.join(', ') + '</p>' : '<p class="text-emerald-300">✓ All required shapes present.</p>') +
+                (missingKeys.length ? '<p><strong>Missing keywords:</strong> ' + missingKeys.join(', ') + '</p>' : '<p class="text-emerald-300">✓ All keywords found.</p>');
+        }
+
+        /* ===== MODAL UTILS ===== */
+        function openModal(id) { const el = document.getElementById(id); if (el) el.classList.remove('hidden'); }
+        function closeModal(id) { const el = document.getElementById(id); if (el) el.classList.add('hidden'); }
+        function switchModalTab(tab) {
+            ['mod-topic', 'mod-mcq', 'mod-def', 'mod-flow'].forEach(function (t) {
+                const btn = document.getElementById('btn-' + t);
+                const form = document.getElementById('form-add-' + t.replace('mod-', ''));
+                if (btn) btn.className = "pb-2 text-xs font-bold text-slate-400 whitespace-nowrap";
+                if (form) form.classList.add('hidden');
+            });
+            const btn = document.getElementById('btn-' + tab);
+            const form = document.getElementById('form-add-' + tab.replace('mod-', ''));
+            if (btn) btn.className = "pb-2 text-xs font-bold text-teal-400 border-b-2 border-teal-400 whitespace-nowrap";
+            if (form) form.classList.remove('hidden');
+            const st = document.getElementById('creator-status');
+            if (st) st.className = 'hidden mb-3 p-2.5 rounded-lg text-xs font-semibold';
+        }
+    </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"e3c1c9af36de41759418005494a48906","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>
