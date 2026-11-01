@@ -1,0 +1,22 @@
+{
+  "name": "TAHA MUJTABA",
+  "tagline": "Web Developer • Game Developer • AI Developer",
+  "description": "Passionate developer crafting modern web experiences, immersive games, and intelligent AI solutions. Expert in Python, HTML, CSS, JavaScript, React, C, C++, C#, and .BAT scripting. Turning ideas into powerful, elegant digital products.",
+  "links": [
+    { "label": "GitHub", "url": "https://github.com/yourusername", "icon": "🐙" },
+    { "label": "LinkedIn", "url": "https://linkedin.com/in/yourusername", "icon": "💼" },
+    { "label": "Email", "url": "mailto:your@email.com", "icon": "✉️" },
+    { "label": "FLOWCHART MAKER", "url": "https://github.com/tahamujtaba572/FlowMaker/releases/download/v1.0.0/FCM.apk", "icon": "🌐" }
+  ],
+  "skills": [
+    { "name": "Python", "level": "Expert" },
+    { "name": "HTML", "level": "Expert" },
+    { "name": "CSS", "level": "Expert" },
+    { "name": "JavaScript", "level": "Expert" },
+    { "name": "React", "level": "Expert" },
+    { "name": "C", "level": "Expert" },
+    { "name": "C++", "level": "Expert" },
+    { "name": "C#", "level": "Expert" },
+    { "name": ".BAT", "level": "Expert" }
+  ]
+}
