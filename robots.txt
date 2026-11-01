@@ -1,0 +1,8 @@
+User-agent: *
+# Blocking the specific files you mentioned
+Disallow: /tm.js
+Disallow: /detail.js
+Disallow: /data.json
+
+# Allow all other pages and files
+Allow: /
